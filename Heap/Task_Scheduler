@@ -1,0 +1,32 @@
+/* APPROACH:
+
+1. ek frequency array banai to store the freq of all the characters
+2. sort kia reverse
+3. idle spots count kie. Ye islie kie taaki ismei bache characters bhr sake.
+4. idle spots ko fill krte gaye
+5. ab if idle spots still remaining toh answer hoega, idle+task.size, varna sirf task.size.
+
+*/
+
+class Solution
+{
+public:
+    int leastInterval(vector<char> &tasks, int n)
+    {
+        vector<int> a(26, 0);
+        for (char tasks : tasks)
+        {
+            a[tasks - 'A']++;
+        }
+        sort(a.begin(), a.end());
+        int chunks = a[25] - 1;
+        int idleSpots = chunks * n;
+
+        for (int i = 24; i >= 0; i--)
+        {
+            idleSpots -= min(chunks, a[i]);
+        }
+
+        return idleSpots < 0 ? tasks.size() : idleSpots + tasks.size();
+    }
+};

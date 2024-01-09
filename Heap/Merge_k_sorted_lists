@@ -1,0 +1,56 @@
+/*
+APPROACH 1:
+- traverse and store all the linkedlist in an array
+- sort the array
+- store the sorted array in and LL
+
+
+APPROACH 2:
+- jaise merge 2 LL kre, vaise hi ek ek krk saare
+
+APPROACH 3:
+- traverse all the LL and store all the values in an min heap.
+- ab from top start traversing the min heap and one by one saare elements ko LL mei daaldo, done
+
+
+APPROACH 4:
+- saare array k initial nodes, ko store krlo in a min heap. 
+- min heap mei K elements will be stored.
+- ab top wale node ko nikalo, usk aage wale ko push kro andr, min heap will re order itself accordingly.
+- ek node head banaya jiski value 0 rakhi. ek aur node banaya temp which is equal to head, ab temp jaha bhi aage point krega head apne aap hi us flow mei point krega so returning head->next will obtained the required result.
+*/
+
+ class mycompare{
+    public:
+    bool operator()(const ListNode *a, const ListNode *b){
+        return(a->val > b->val);
+    }
+};
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode *head = new ListNode(0);
+        ListNode *temp=head;
+
+        priority_queue<ListNode*, vector<ListNode*>, mycompare >p;
+
+        for(int i=0 ; i<lists.size() ; i++){
+            if(lists[i] != NULL){
+                p.push(lists[i]);
+            }
+        }
+
+        while(!p.empty()){
+            auto least = p.top();
+             p.pop();
+            temp->next=least;
+            temp = temp->next;
+            if(least->next){
+                p.push(least->next);
+            }
+           
+        }
+        return head->next;
+    }
+};
